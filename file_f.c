@@ -71,7 +71,6 @@ void parseAndProcess(char *buff, stack_t **stack, unsigned int line_no)
 {
 	char **command;
 	void (*f)(stack_t**, unsigned int);
-	int i = 0;
 
 	command = parseLine(buff);
 	if ((strncmp(command[0], "push", 4)) == 0)
@@ -87,19 +86,15 @@ void parseAndProcess(char *buff, stack_t **stack, unsigned int line_no)
 	}
 	else
 	{
-		while (command[i] != NULL)
+		f = handle_opcodes(command[0]);
+		if (f == NULL)
 		{
-			f = handle_opcodes(command[0]);
-			if (f == NULL)
-			{
-				fprintf(stderr, "L%d: unknown instruction %s\n", line_no, command[i]);
-				free(command), freeStack(stack);
-				exit(EXIT_FAILURE);
-			}
-			else
-				f(stack, line_no);
-			i++;
+			fprintf(stderr, "L%u: unknown instruction %s\n", line_no, command[0]);
+			free(command), freeStack(stack);
+			exit(EXIT_FAILURE);
 		}
+		else
+			f(stack, line_no);
 	}
 	free(command);
 }

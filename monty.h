@@ -40,6 +40,8 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+
+extern global_t
 /* === === === functions === === === */
 void checkAndOpenFile(int argc, char *fileName, FILE **file);
 void parseAndProcess(char *buff, stack_t **stack, unsigned int line_number);
